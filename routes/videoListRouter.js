@@ -51,11 +51,12 @@ router.post("/", (req, res)=> {
 
     }
     const fileContent = readFile("./data/video-list.json");
+    
     fileContent.push(newNote);
     fs.writeFileSync("./data/video-list.json", JSON.stringify(fileContent));
 
     res.status(201).json(newNote);
-}).post("/:id", (req, res)=> {
+}).post("/:id/comments", (req, res)=> {
     console.log(req.body);
     console.log("hi")
     console.log(req.query)
@@ -63,14 +64,18 @@ router.post("/", (req, res)=> {
         "name":req.body.name,
         "comment":req.body.comment,
         "likes":0,
-        "id":uuidv4(),
-
+        "timestamp": Date.now(),
 
     }
     const fileContent = readFile("./data/video-list.json");
-    fileContent.push(newNote);
+    
+    const currentId = fileContent.findIndex((video) => video.id == req.params.id)
+    console.log(currentId)
+    fileContent[currentId].comments.push(newNote)
+
+
     fs.writeFileSync("./data/video-list.json", JSON.stringify(fileContent));
 
     res.status(201).json(newNote);
-});
+}); 
 module.exports = router;
