@@ -5,6 +5,7 @@ const fs = require('fs');
 const { restart } = require('nodemon');
 const readFile = require("../utils/helpers");
 const { v4: uuidv4 } = require('uuid');
+const { format } = require('path');
 
 router.get("/",(req,res) =>{
     const fileContent = readFile("./data/video-list.json");
@@ -80,7 +81,21 @@ router.post("/", (req, res)=> {
 }); 
 router.put("/:id", (req, res)=> {
    console.log("hi");
-   console.log(req.body)
-   res.status(201).json({"hi":"bye"})
+   console.log(req.params.id)
+   const fileContent = readFile("./data/video-list.json");
+   const currentVid = fileContent.find((video) => video.id == req.params.id)
+   console.log(currentVid)
+   let num = parseFloat(currentVid.likes.replace(/,/g, ''));
+   console.log(num)
+   num = num + 1
+   const numberFormatter = Intl.NumberFormat('en-US');
+    const formatted = numberFormatter.format(num);
+    console.log(formatted)
+    currentVid.likes = formatted;
+
+   fs.writeFileSync("./data/video-list.json", JSON.stringify(fileContent));
+
+    
+   res.status(201).json({})
 }); 
 module.exports = router;
