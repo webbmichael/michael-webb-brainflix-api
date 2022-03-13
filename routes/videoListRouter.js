@@ -78,4 +78,9 @@ router.post("/", (req, res)=> {
 
     res.status(201).json(newNote);
 }); 
+router.put("/:id", (req, res)=> {
+   console.log("hi");
+   console.log(req.body)
+   res.status(201).json({"hi":"bye"})
+}); 
 module.exports = router;
