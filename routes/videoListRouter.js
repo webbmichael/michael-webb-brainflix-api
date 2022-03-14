@@ -68,6 +68,7 @@ router.post("/", (req, res)=> {
         "comment":req.body.comment,
         "likes":0,
         "timestamp": Date.now(),
+        "id":uuidv4()
 
     }
     const fileContent = readFile("./data/video-list.json");
@@ -106,9 +107,9 @@ router.delete("/:id/comments/:index", (req, res)=> {
     const currentVid = fileContent.find((video) => video.id == req.params.id)
     console.log(req.params.index)
     console.log(currentVid.comments)
-    const indexOfComment = currentVid.comments.indexOf(o => o.id ==req.params.index)
+    const indexOfComment = currentVid.comments.findIndex(o => o.id ==req.params.index)
     console.log(indexOfComment)
-    // currentVid.comments.splice(req.params.index,1)
+    currentVid.comments.splice(indexOfComment,1)
 
 
  
