@@ -26,6 +26,8 @@ router.get("/",(req,res) =>{
     const fileContent = readFile("./data/video-list.json");
     console.log('test')
     const currentvid = fileContent.find((video) => video.id == req.params.id)
+    // console.log(currentvid)
+    
     
     res.status(200).json(currentvid);
 
@@ -98,4 +100,21 @@ router.put("/:id", (req, res)=> {
     
    res.status(201).json({})
 }); 
+router.delete("/:id/comments/:index", (req, res)=> {
+    console.log(req.params)
+    const fileContent = readFile("./data/video-list.json");
+    const currentVid = fileContent.find((video) => video.id == req.params.id)
+    console.log(req.params.index)
+    console.log(currentVid.comments)
+    const indexOfComment = currentVid.comments.indexOf(o => o.id ==req.params.index)
+    console.log(indexOfComment)
+    // currentVid.comments.splice(req.params.index,1)
+
+
+ 
+    fs.writeFileSync("./data/video-list.json", JSON.stringify(fileContent));
+ 
+     
+    res.status(201).json({})
+ }); 
 module.exports = router;
